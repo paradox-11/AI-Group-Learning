@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-img = cv2.imread("C:\\Users\\wang\\Desktop\\qc.jpg",cv2.IMREAD_COLOR)
+img = cv2.imread("./test.jpg",cv2.IMREAD_COLOR)
 
 def kmeans(image,k,max_iter=10000):
     img = image.reshape(-1,3)
@@ -30,7 +30,5 @@ def kmeans(image,k,max_iter=10000):
     return img
 
 
-img = kmeans(img,3)
-
-cv2.imshow("",img)
-cv2.waitKey(100000)
+img_result = kmeans(img,3)
+cv2.imwrite("./result.jpg", img_result)
