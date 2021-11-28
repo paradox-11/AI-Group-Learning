@@ -113,7 +113,7 @@ class DataReader():
 
 if __name__ == '__main__':
     data_reader = DataReader()
-    data = data_reader.getData('Linear Regression/ex1data1.txt')
+    data = data_reader.getData('ex1data1.txt') #第一列是城市人口数量，第二列是该城市小吃店利润
 
     lr_model = LinearRegression(iters=1)
     lr_model.calculateByLeastSqaureMethod(data)
