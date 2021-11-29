@@ -18,7 +18,7 @@ def kmeans(image,k,max=100000,seed=0):
 
 
 import cv2 as cv
-img=cv.imread("C:\\Users\\86182\\Downloads\\d9e8a4ced6b21804f09f508a624497b9.jpeg")
+img=cv.imread("./input.jpeg,cv2.IMREAD_COLOR")
 new_image=kmeans(img, 3, 100000, 0)
 cv.imshow("image", new_image)
 cv.waitKey(0)
