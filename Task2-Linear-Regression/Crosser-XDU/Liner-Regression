@@ -1,0 +1,83 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import datasets
+class DataReader(object):
+
+    def __init__(self,filepath):
+        '''获取数据'''
+        self.filepath=filepath
+        self.data=pd.read_csv(self.filepath,header=None,names=['x','y'])
+    def returnData(self):
+        '''返回处理的数据'''
+        self.data.insert(0,'one',1)
+        col = self.data.shape[1]
+        X = self.data.iloc[:, :-1]
+        y = self.data.iloc[:, col - 1:col]
+        X = np.matrix(X.values)
+        y = np.matrix(y.values)
+        theta = np.matrix(np.zeros((X.shape[1]),dtype=int))
+        data=self.data
+        return X,y,theta,data
+
+class LinerRegression(object):
+    def __init__(self,X):
+        '''读取数据维度'''
+        self.dimension=X.shape[1]-1
+
+    def computecost(self,X, y, theta):
+        '''计算损失'''
+        inner = np.power((X * theta.T - y), 2)
+        return np.sum(inner) / (2 * len(X))
+
+    def gradientDescent(self,X, y, theta, alpha, iter):
+        '''梯度下降方法'''
+        paramenter = theta.ravel().shape[1]
+        cost = np.zeros(iter)
+        temp = np.matrix(np.zeros(theta.shape))
+        for i in range(iter):
+            error = (X * theta.T) - y
+            for j in range(paramenter):
+                term = np.multiply(error, X[:, j])
+                temp[:, j] = theta[:, j] - (alpha * np.sum(term)) / len(X)
+            theta = temp
+            cost[i] = computecost(X, y, theta)
+        return theta,cost
+
+    def normalEqn(self,X, y):
+        '''正规方程，普适性的最小二乘法'''
+        theta = np.linalg.inv(X.T @ X) @ X.T @ y
+        return theta
+
+    def NewTon_way(self,X,y):
+        for i in range(100):
+            theta=np.random.randint(-1000,10000,(self.dimension+1,1))
+            np.matrix(theta,dtype=object)
+            theta=theta-np.linalg.inv(X.T@ X) @ (X.T@ X@ theta-X.T@ y)
+            return theta
+
+    def show(self,data,X,y,theta):
+        '''展示当数据集为一维时的图像,展示多于一维时的系数'''
+        if self.dimension==1:
+            g = theta
+            x = np.linspace(data.x.min(), data.x.max(), 100)
+            f = g[0, 0] + (g[1, 0] * x)
+            fig, ax = plt.subplots(figsize=(12, 8))
+            ax.plot(x, f, 'r', label='Prediction')
+            ax.scatter(data.x, data.y, label='Traning Data')
+            ax.legend(loc=2)
+            ax.set_xlabel('x')
+            ax.set_ylabel('y')
+            ax.set_title('Predicted y  vs. Real y')
+            plt.show()
+        else:
+            print(theta)
+
+    def otherfunction(self):
+        pass
+if __name__=='__main__':
+    data_reader=DataReader('ex1data1.tx')
+    X,y,theta,data=data_reader.returnData()
+    lr_model=LinerRegression(X)
+    theta=lr_model.NewTon_way(X,y)
+    lr_model.show(data,X, y, theta)
