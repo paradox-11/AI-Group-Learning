@@ -83,7 +83,7 @@ class LinearRegression():
         plt.show()
 
 if __name__=="__main__":
-    path="C:\\Users\lzy\\Desktop\\2\\4\\data4.txt"
+    path="4\\data4.txt"
     variablename1="Population"
     variablename2="Profit"
     data_operate=LinearRegression()
